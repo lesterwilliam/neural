@@ -1,3 +1,13 @@
+"""
+ Animating multiple objects using a list.
+ Sample Python/Pygame Programs
+ Simpson College Computer Science
+ http://programarcadegames.com/
+ http://simpson.edu/computer-science/
+ 
+ Explanation video: http://youtu.be/Gkhz3FuhGoI
+"""
+ 
 # Import a library of functions called 'pygame'
 import pygame
 import random
@@ -5,23 +15,23 @@ import random
 # Initialize the game engine
 pygame.init()
  
-BLACK = [0x00, 0x00, 0x00]
-WHITE = [0xFF, 0xFF, 0xFF]
+BLACK = [0, 0, 0]
+WHITE = [255, 255, 255]
  
 # Set the height and width of the screen
 SIZE = [400, 400]
  
 screen = pygame.display.set_mode(SIZE)
-pygame.display.set_caption("mad pinguin")
+pygame.display.set_caption("Snow Animation")
  
 # Create an empty array
-block_list = []
+snow_list = []
  
 # Loop 50 times and add a snow flake in a random x,y position
 for i in range(50):
     x = random.randrange(0, 400)
     y = random.randrange(0, 400)
-    block_list.append([x, y])
+    snow_list.append([x, y])
  
 clock = pygame.time.Clock()
  
@@ -37,22 +47,22 @@ while not done:
     screen.fill(BLACK)
  
     # Process each snow flake in the list
-    for i in range(len(block_list)):
+    for i in range(len(snow_list)):
  
         # Draw the snow flake
-        pygame.draw.circle(screen, WHITE, block_list[i], 2)
+        pygame.draw.circle(screen, WHITE, snow_list[i], 2)
  
         # Move the snow flake down one pixel
-        block_list[i][1] += 1
+        snow_list[i][1] += 1
  
         # If the snow flake has moved off the bottom of the screen
-        if block_list[i][1] > 400:
+        if snow_list[i][1] > 400:
             # Reset it just above the top
             y = random.randrange(-50, -10)
-            block_list[i][1] = y
+            snow_list[i][1] = y
             # Give it a new x position
             x = random.randrange(0, 400)
-            block_list[i][0] = x
+            snow_list[i][0] = x
  
     # Go ahead and update the screen with what we've drawn.
     pygame.display.flip()
