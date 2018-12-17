@@ -1,0 +1,7 @@
+Goal of this project is to learn the basics about machine learning, deep learning, neural networks and related stuff.
+
+In a first instance I try to write a simple iteration of the game "flappy bird". First with a hard defined world and later with a randomly generated one.
+The next step is to create an interface between the player and the later auto-pilot software which tries to win the game.
+In a further step I want to try to create a neural network to find the correlation between what the "bird's" perspective and the ideal user input would be to win the game indefinitely.
+
+If you are experienced in this field, you might have already found out that I am not at this point. Any constructive input is gladly welcome!
