@@ -32,18 +32,47 @@ class NeuralNetwork:
 
 
 if __name__ == "__main__":
-    X = np.array([[0,0,1],
-                  [0,1,1],
-                  [1,0,1],
-                  [1,1,1]])
+    X = np.array([[0],
+    [0.1],
+    [0.2],
+    [0.3],
+    [0.4],
+    [0.5],
+    [0.6],
+    [0.7],
+    [0.8],
+    [0.9],
+                  [1]])
     y = np.array([[0],
-                  [1],
-                  [1],
-                  [0]])
+    [0.1],
+    [0.2],
+    [0.3],
+    [0.4],
+    [0.5],
+    [0.6],
+    [0.7],
+    [0.8],
+    [0.9],
+                  [1]])
     nn = NeuralNetwork(X,y)
-
-    for i in range(1500):
+    it_range = 10000
+    for i in range(it_range):
         nn.feedforward()
         nn.backprop()
 
-    print(nn.output)
+        progress = float(i) / float(it_range) * 100
+        if progress - int(progress) == 0:
+        	print("%i%%" %progress)
+        
+    print("Layer1:\n" + str(nn.layer1) + "\n")
+    print("Weights1:\n" + str(nn.weights1) + "\n")
+    print("Weights2:\n" + str(nn.weights2) + "\n")
+    print("Input:\n" + str(nn.input) + "\n")
+    print("Output:\n" + str(nn.output) + "\n")
+    
+    
+    
+    
+    
+    
+    
