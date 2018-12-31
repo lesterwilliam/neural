@@ -32,16 +32,16 @@ class NeuralNetwork:
 		self.weights3 += d_weights3
 
 if __name__ == "__main__":
-    X = np.array([[0,0,1],
-                  [0,1,1],
-                  [1,0,1],
-                  [1,1,1]])
-    y = np.array([[0],
-                  [1],
-                  [1],
-                  [0]])
+    X = np.array([[0.1],
+                  [0.2],
+                  [0.3],
+                  [0.4]])
+    y = np.array([[0.1],
+                  [0.2],
+                  [0.3],
+                  [0.4]])
     nn = NeuralNetwork(X,y)
-    it_range = 1000
+    it_range = 100000
     for i in range(it_range):
         nn.feedforward()
         nn.backprop()
