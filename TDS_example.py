@@ -38,7 +38,7 @@ if __name__ == "__main__":
                   [1,1,1]])
     y = np.array([[0],[1],[1],[0]])
     nn = NeuralNetwork(X,y)
-    it_range = 10000
+    it_range = 100000
     for i in range(it_range):
         nn.feedforward()
         nn.backprop()

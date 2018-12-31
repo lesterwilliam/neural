@@ -13,8 +13,8 @@ class NeuralNetwork:
     def __init__(self, x, y):
         self.input      = x
         self.weights1   = np.random.rand(self.input.shape[1],4) 
-        self.weights2   = np.random.rand(4,1)                 
-        self.weights3	= np.random.rand(4,1)
+        self.weights2   = np.random.rand(4,4)                 
+        self.weights3	= np.random.rand(4,1)#here lays a problem!!!
         self.y          = y
         self.output     = np.zeros(self.y.shape)
 
@@ -41,12 +41,22 @@ if __name__ == "__main__":
                   [1],
                   [0]])
     nn = NeuralNetwork(X,y)
-
-    for i in range(1500):
+    it_range = 100000
+    for i in range(it_range):
         nn.feedforward()
         nn.backprop()
 
-    print(nn.output)
+        progress = float(i) / float(it_range) * 100
+        if progress - int(progress) == 0:
+        	print("%i%%" %progress)
+        if i == it_range - 1:
+        	print("Done!\n")
+
     
-    
-    
+    print("Input:\n" + str(nn.input) + "\n\n" + str(nn.y) + "\n")
+    print("Weights1:\n" + str(nn.weights1) + "\n")
+    print("Layer1:\n" + str(nn.layer1) + "\n")
+    print("Weights2:\n" + str(nn.weights2) + "\n")
+    print("Layer2:\n" + str(nn.layer2) + "\n")
+    print("Weights3:\n" + str(nn.weights3) + "\n")
+    print("Output:\n" + str(nn.output) + "\n")
