@@ -2,18 +2,21 @@
 import numpy as np
 
 # Activation function: Gradient descent
-def activation_f(x):
-	return sigmoid(x)
-def activation_f_d(x):
-	return 0
-def sigmoid(x):
+def av_f(x):
+	return sgmd(x)
+def av_f_d(x):
+	return sgmd_d(x)
+
+# Sigmoidal function
+def sgmd(x):
 	return 1.0/(1+ np.exp(-x))
-def sigmoid_derivative(x):
+def sgmd_d(x):
 	return x * (1.0 - x)
+# Tangens hyperbolicus function
 def tanh(x):
-	return ((1-np.exp(-2*x))/(1+np.exp(-2*x)))
+	return np.tanh(x)
 def tanh_d(x):
-	return 0
+	return 1 - np.tanh(x)
 
 # Object prototype
 class NeuralNetwork:
@@ -28,15 +31,15 @@ class NeuralNetwork:
 		self.output     = np.zeros(self.y.shape)
 		
 	def feedforward(self):
-		self.layer1 = sigmoid(np.dot(self.input, self.weights1))
-		self.layer2 = sigmoid(np.dot(self.layer1, self.weights2))
-		self.output = sigmoid(np.dot(self.layer2, self.weights3))
+		self.layer1 = av_f(np.dot(self.input, self.weights1))
+		self.layer2 = av_f(np.dot(self.layer1, self.weights2))
+		self.output = av_f(np.dot(self.layer2, self.weights3))
 	
 	def backprop(self):
-		d_weights3 = np.dot(self.layer2.T, (2*(self.y - self.output) * sigmoid_derivative(self.output)))
-		d_weights2 = np.dot(self.layer1.T, np.dot(2*(self.y - self.output) * sigmoid_derivative(self.output), self.weights3.T) * sigmoid_derivative(self.layer2))
-		d_weights1 = np.dot(self.input.T, np.dot(np.dot(2*(self.y - self.output) * sigmoid_derivative(self.output),
-		self.weights3.T) * sigmoid_derivative(self.layer2), self.weights2.T) * sigmoid_derivative(self.layer1))
+		d_weights3 = np.dot(self.layer2.T, (2*(self.y - self.output) * av_f_d(self.output)))
+		d_weights2 = np.dot(self.layer1.T, np.dot(2*(self.y - self.output) * av_f_d(self.output), self.weights3.T) * av_f_d(self.layer2))
+		d_weights1 = np.dot(self.input.T, np.dot(np.dot(2*(self.y - self.output) * av_f_d(self.output),
+		self.weights3.T) * av_f_d(self.layer2), self.weights2.T) * av_f_d(self.layer1))
 		self.weights1 += d_weights1
 		self.weights2 += d_weights2
 		self.weights3 += d_weights3
