@@ -1,6 +1,6 @@
 # Import numpy module
 import numpy as np
-import nn_activation_function
+#import nn_activation_function
 
 # Activation function: Gradient descent
 def av_f(x):
