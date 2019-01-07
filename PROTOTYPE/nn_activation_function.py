@@ -1,3 +1,4 @@
+# Import numpy module
 import numpy as np
 
 # Activation function: Gradient descent
@@ -11,6 +12,7 @@ def sgmd(x):
 	return 1.0/(1+ np.exp(-x))
 def sgmd_d(x):
 	return x * (1.0 - x)
+	
 # Tangens hyperbolicus function
 def tanh(x):
 	return np.tanh(x)
