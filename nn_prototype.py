@@ -1,11 +1,13 @@
+# Import numpy module
 import numpy as np
 
+# Activation function: Gradient descent
 def sigmoid(x):
 	return 1.0/(1+ np.exp(-x))
-	
 def sigmoid_derivative(x):
 	return x * (1.0 - x)
-	
+
+# Object prototype
 class NeuralNetwork:
 	def __init__(self, x, y):
 		self.input      = x
@@ -30,8 +32,11 @@ class NeuralNetwork:
 		self.weights1 += d_weights1
 		self.weights2 += d_weights2
 		self.weights3 += d_weights3
-		
+
+# Main loop
 if __name__ == "__main__":
+	# Learning data set
+	# Inputs:
 	X = np.array([
 		[1,1,0,0,0,1,1,0],
 		[1,0,1,1,0,0,1,1],
@@ -41,6 +46,7 @@ if __name__ == "__main__":
 		[0,1,0,1,0,1,1,0],
 		[0,0,1,1,1,1,0,1],
 		[0,1,0,1,0,1,1,1]])
+	# Outputs:
 	y = np.array([
 		[0],
 		[1],
@@ -50,7 +56,11 @@ if __name__ == "__main__":
 		[1],
 		[1],
 		[0]])
+		
+	# Create network object
 	nn = NeuralNetwork(X,y)
+	
+	# Learn data set
 	it_range = 10000
 	for i in range(it_range):
 		nn.feedforward()
@@ -61,6 +71,7 @@ if __name__ == "__main__":
 			if i == it_range - 1:
 				print("Done!\n")
 	
+	# Print network data
 	print("Input:\n" + str(nn.input) + "\n\n" + str(nn.y) + "\n")
 	print("Weights1:\n" + str(nn.weights1) + "\n")
 	print("Layer1:\n" + str(nn.layer1) + "\n")
