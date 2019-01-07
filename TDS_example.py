@@ -1,5 +1,6 @@
 # All credits to James Loy, you're the man!
 # https://towardsdatascience.com/how-to-build-your-own-neural-network-from-scratch-in-python-68998a08e4f6
+# Working-copy test
 
 import numpy as np
 
