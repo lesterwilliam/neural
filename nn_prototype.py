@@ -2,10 +2,18 @@
 import numpy as np
 
 # Activation function: Gradient descent
+def activation_f(x):
+	return sigmoid(x)
+def activation_f_d(x):
+	return 0
 def sigmoid(x):
 	return 1.0/(1+ np.exp(-x))
 def sigmoid_derivative(x):
 	return x * (1.0 - x)
+def tanh(x):
+	return ((1-np.exp(-2*x))/(1+np.exp(-2*x)))
+def tanh_d(x):
+	return 0
 
 # Object prototype
 class NeuralNetwork:
