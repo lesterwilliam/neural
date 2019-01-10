@@ -22,4 +22,4 @@ def breedChild(parentA, parentB):
 def breedChildren(parents, number_of_child):
 	nextPopulation = []
 
-print (breedChild(parentA, parentB))
+#print (breedChild(parentA, parentB))
