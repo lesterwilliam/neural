@@ -1,13 +1,5 @@
-# prototype
-
 import random
 import numpy as np
-
-# test data
-#parentA = [0,0,9,0,0,0,0,0,1,5,8,7,9,5]
-#parentB = [1,1,1,1,1,1,1,1,5,9,4,8,5,5]
-#pure = [1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0]
-#mutationFactor = 0.1
 
 # Mixes genes from parents and returns created child
 def breedChild(parentA, parentB):
@@ -21,11 +13,7 @@ def breedChild(parentA, parentB):
 			child[item] = parentB[item]
 	return child
 
-def breedChildren(parents, number_of_child):
-	nextPopulation = []
-
-#print (breedChild(parentA, parentB))
-
+# Creates a random mutation and returns new mutated gene
 def mutate(pure, mutationFactor):
 	mutant = np.zeros((len(pure),1))
 	for gene in range(len(pure)):
@@ -37,5 +25,3 @@ def mutate(pure, mutationFactor):
 		else:
 			mutant[gene] = pure[gene]
 	return mutant
-
-#print (mutate(pure, mutationFactor))
