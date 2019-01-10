@@ -1,3 +1,5 @@
+# Thanks to https://blog.sicara.com/getting-started-genetic-algorithms-python-tutorial-81ffa1dd72f9
+
 import random
 import numpy as np
 
