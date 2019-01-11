@@ -44,7 +44,6 @@ def breedChild(parentA, parentB):
 				else:
 					child[h][i][j] = parentB[h][i][j]
 	return child
-	
 
 # Creates a random binary mutation and returns new mutated gene
 def mutate_binary(pure, mutationChance):

@@ -1,7 +1,8 @@
 # Import numpy module
 import numpy as np
 import nn_activation_function as act_func
-np.set_printoptions(formatter={'float':'{: 0.4f}'.format})
+import random
+np.set_printoptions(formatter={'float':'{: 0.1f}'.format})
 # Object prototype
 class NeuralNetwork:
 	def __init__(self, x, y):
@@ -35,7 +36,7 @@ class NeuralNetwork:
 				self.feedforward()
 				self.backprop()
 			population[person] = self.exportGenes()
-		return population
+		return self.sort(population, 16, 100)
 	
 	def exportGenes(self):
 		export = np.zeros((4,8,8))
@@ -60,12 +61,39 @@ class NeuralNetwork:
 	
 	def sort(self, population, personCount, iterations):
 		for j in range(iterations):
-			for i in range(personCount - 1):
+			for i in range((personCount - 1)):
 				if population[i][3][0][0] < population[i + 1][3][0][0]:
-					temp = population[i]
-					population[i] = population[i + 1]
-					population[i + 1] = temp
+					for j in range(np.shape(population)[1]):
+						for k in range(np.shape(population)[2]):
+							for l in range(np.shape(population)[3]):
+								temp = population[i][j][k][l]
+								population[i][j][k][l] = population[i+1][j][k][l]
+								population[i+1][j][k][l] = temp
 		return population
+	
+	def breedChild(self, parentA, parentB):
+		child = np.full_like(parentA, 0)
+		for h in range(np.shape(child)[0]):
+			for i in range(np.shape(child)[1]):
+				for j in range(np.shape(child)[2]):
+					if (int(100 * random.random()) < 50):
+						child[h][i][j] = parentA[h][i][j]
+					else:
+						child[h][i][j] = parentB[h][i][j]
+		return self.mutate_floating(child, 0.2, 2)
+	
+	def mutate_floating(self, pure, mutationChance, mutationFactor):
+		mutant = np.copy(pure)
+		for h in range(np.shape(mutant)[0]):
+			for i in range(np.shape(mutant)[1]):
+				for j in range(np.shape(mutant)[2]):
+					if (100 * random.random() < (mutationChance * 100)):
+						mutant[h][i][j] = pure[h][i][j] * (random.uniform(-1.0*(mutationFactor),1.0*(mutationFactor)))
+						if (mutant[h][i][j] == 0):
+							mutant[h][i][j] = random.uniform(-1,1)
+		return mutant
+	
+	#def reproduce(self, population):
 	
 # Main loop
 if __name__ == "__main__":
@@ -94,35 +122,5 @@ if __name__ == "__main__":
 	# Create network object
 	nn = NeuralNetwork(X,y)
 	
-	# Learn data set
-	personCount = 16
-	population = np.zeros((personCount,4,8,8))
-	#for person in range(personCount):
-	#	nn = NeuralNetwork(X,y)
-	#	it_range = 250
-	#	for i in range(it_range):
-	#		nn.feedforward()
-	#		nn.backprop()
-	#		progress = float(i) / float(it_range) * 100
-	#		if progress - int(progress) == 0:
-	#			print("%i%%" %progress)
-	#			if i == it_range - 1:
-	#				print("Done!\n")
-	#	population[person] = nn.exportGenes()
-	population = nn.run(16, 1000)
-	#for i in range(personCount):
-		#print(population[i][0][0][0])
-		#print(population[i][3][0][0])
-	print(population[0])
-	nn.sort(population, 16, 500)
-	print("\n")
-	print(population[0])
-	# Print network data
-	
-	#print("Input:\n" + str(nn.input) + "\n\n" + str(nn.y) + "\n")
-	#print("Weights1:\n" + str(nn.weights1) + "\n")
-	#print("Layer1:\n" + str(nn.layer1) + "\n")
-	#print("Weights2:\n" + str(nn.weights2) + "\n")
-	#print("Layer2:\n" + str(nn.layer2) + "\n")
-	#print("Weights3:\n" + str(nn.weights3) + "\n")
-	#print("Output:\n" + str(nn.output) + "\n")
+	# Create population of X people and train them Y times. Returns genes of the entire population.
+	print(nn.run(16, 1000))
