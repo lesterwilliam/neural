@@ -14,28 +14,37 @@ mutationFactor = 2
 #		[0,0,0],
 #		[0,0,0]]
 
-#parentA = [[1.0,1.0,1.0,1.0],
-#		[0.0,0.0,0.0,0.0],
-#		[0.0,0.0,0.0,0.0],
-#		[0.0,0.0,0.0,0.0]]
+parentA = [[[1.0,1.0,1.0,1.0],
+		[0.0,0.0,0.0,0.0],
+		[0.0,0.0,0.0,0.0],
+		[0.0,0.0,0.0,0.0]],[[1.0,1.0,1.0,1.0],
+		[0.0,0.0,0.0,0.0],
+		[0.0,0.0,0.0,0.0],
+		[0.0,0.0,0.0,0.0]]]
 
-#parentB = [[0.0,0.0,0.0,0.0],
-#		[0.0,0.0,0.0,0.0],
-#		[0.0,0.0,0.0,0.0],
-#		[0.0,0.0,0.0,0.0]]
+parentB = [[[0.0,0.0,0.0,0.0],
+		[0.0,0.0,0.0,0.0],
+		[0.0,0.0,0.0,0.0],
+		[0.0,0.0,0.0,0.0]],[[0.0,0.0,0.0,0.0],
+		[0.0,0.0,0.0,0.0],
+		[0.0,0.0,0.0,0.0],
+		[0.0,0.0,0.0,0.0]]]
 
 # Mixes genes from parents and returns created child
 def breedChild(parentA, parentB):
-	parentA = np.matrix(parentA)
-	parentB = np.matrix(parentB)
 	child = np.full_like(parentA, 0)
-	for i in range(np.shape(child)[0]):
-		for j in range(np.shape(child)[1]):
-			if (int(100 * random.random()) < 50):
-				child[i,j] = parentA[i,j]
-			else:
-				child[i,j] = parentB[i,j]
+	print(np.shape(child)[0])
+	print(np.shape(child)[1])
+	print(np.shape(child)[2])
+	for h in range(np.shape(child)[0]):
+		for i in range(np.shape(child)[1]):
+			for j in range(np.shape(child)[2]):
+				if (int(100 * random.random()) < 50):
+					child[h][i][j] = parentA[h][i][j]
+				else:
+					child[h][i][j] = parentB[h][i][j]
 	return child
+	
 
 # Creates a random binary mutation and returns new mutated gene
 def mutate_binary(pure, mutationChance):
@@ -60,5 +69,7 @@ def mutate_floating(pure, mutationChance, mutationFactor):
 				if (mutant[i,j] == 0):
 					mutant[i,j] = random.uniform(-1,1)
 	return mutant
+
+breedChild(parentA,parentB)
 
 #print (mutate_floating(breedChild(parentA, parentB), mutationChance, mutationFactor))
