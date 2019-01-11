@@ -13,7 +13,7 @@ class NeuralNetwork:
 		self.weights3   = np.random.rand(self.layer2size,1)
 		self.y          = y
 		self.output     = np.zeros(self.y.shape)
-		
+	
 	def feedforward(self):
 		self.layer1 = act_func.av_f(np.dot(self.input, self.weights1))
 		self.layer2 = act_func.av_f(np.dot(self.layer1, self.weights2))
@@ -26,6 +26,19 @@ class NeuralNetwork:
 		self.weights1 += d_weights1
 		self.weights2 += d_weights2
 		self.weights3 += d_weights3
+	
+	def exportGenes(self):
+		export = np.zeros((3,8,8))
+		export[0] = nn.weights1
+		export[1] = np.pad(nn.weights2, ((0,0),(0,4)), mode='constant', constant_values=0)
+		export[2] = np.pad(nn.weights3, ((0,4),(0,7)), mode='constant', constant_values=0)
+		return (export)
+	
+	def calc(self, input, genes):
+		layer1 = act_func.av_f(np.dot(input, genes[0]))
+		layer2 = act_func.av_f(np.dot(layer1, genes[1]))
+		output = act_func.av_f(np.dot(layer2, genes[2]))
+		return (output[0])
 
 # Main loop
 if __name__ == "__main__":
@@ -74,3 +87,5 @@ if __name__ == "__main__":
 	print("Layer2:\n" + str(nn.layer2) + "\n")
 	print("Weights3:\n" + str(nn.weights3) + "\n")
 	print("Output:\n" + str(nn.output) + "\n")
+	nn.exportGenes()
+	nn.calc([0,1,0,1,0,1,1,1], nn.exportGenes())
