@@ -28,10 +28,11 @@ class NeuralNetwork:
 		self.weights3 += d_weights3
 	
 	def exportGenes(self):
-		export = np.zeros((3,8,8))
+		export = np.zeros((4,8,8))
 		export[0] = nn.weights1
 		export[1] = np.pad(nn.weights2, ((0,0),(0,4)), mode='constant', constant_values=0)
 		export[2] = np.pad(nn.weights3, ((0,4),(0,7)), mode='constant', constant_values=0)
+		export[3][0][0] = self.fitness()
 		return (export)
 	
 	def calc(self, input, genes):
@@ -39,6 +40,13 @@ class NeuralNetwork:
 		layer2 = act_func.av_f(np.dot(layer1, genes[1]))
 		output = act_func.av_f(np.dot(layer2, genes[2]))
 		return (output[0])
+	
+	def fitness(self):
+		fault = 0
+		for item in range(len(self.output)):
+			fault += abs(self.output[item] - self.y[item])
+		fitness = len(self.output)/fault
+		return fitness
 
 # Main loop
 if __name__ == "__main__":
@@ -65,27 +73,32 @@ if __name__ == "__main__":
 		[0]])
 		
 	# Create network object
-	nn = NeuralNetwork(X,y)
+	
 	
 	# Learn data set
-	it_range = 10000
-	for i in range(it_range):
-		nn.feedforward()
-		nn.backprop()
-		progress = float(i) / float(it_range) * 100
-		if progress - int(progress) == 0:
-			print("%i%%" %progress)
-			if i == it_range - 1:
-				print("Done!\n")
+	personCount = 16
+	population = np.zeros((personCount,4,8,8))
+	for person in range(personCount):
+		nn = NeuralNetwork(X,y)
+		it_range = 250
+		for i in range(it_range):
+			nn.feedforward()
+			nn.backprop()
+			#progress = float(i) / float(it_range) * 100
+			#if progress - int(progress) == 0:
+				#print("%i%%" %progress)
+				#if i == it_range - 1:
+					#print("Done!\n")
+		population[person] = nn.exportGenes()
+	for i in range(personCount):
+		print(population[i][3][0][0])
 	
 	# Print network data
 	np.set_printoptions(formatter={'float':'{: 0.4f}'.format})
-	print("Input:\n" + str(nn.input) + "\n\n" + str(nn.y) + "\n")
-	print("Weights1:\n" + str(nn.weights1) + "\n")
-	print("Layer1:\n" + str(nn.layer1) + "\n")
-	print("Weights2:\n" + str(nn.weights2) + "\n")
-	print("Layer2:\n" + str(nn.layer2) + "\n")
-	print("Weights3:\n" + str(nn.weights3) + "\n")
-	print("Output:\n" + str(nn.output) + "\n")
-	nn.exportGenes()
-	nn.calc([0,1,0,1,0,1,1,1], nn.exportGenes())
+	#print("Input:\n" + str(nn.input) + "\n\n" + str(nn.y) + "\n")
+	#print("Weights1:\n" + str(nn.weights1) + "\n")
+	#print("Layer1:\n" + str(nn.layer1) + "\n")
+	#print("Weights2:\n" + str(nn.weights2) + "\n")
+	#print("Layer2:\n" + str(nn.layer2) + "\n")
+	#print("Weights3:\n" + str(nn.weights3) + "\n")
+	#print("Output:\n" + str(nn.output) + "\n")
