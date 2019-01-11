@@ -80,7 +80,7 @@ class NeuralNetwork:
 						child[h][i][j] = parentA[h][i][j]
 					else:
 						child[h][i][j] = parentB[h][i][j]
-		return self.mutate_floating(child, 0.2, 2)
+		return self.mutate_floating(child, 0.2, 1)
 	
 	def mutate_floating(self, pure, mutationChance, mutationFactor):
 		mutant = np.copy(pure)
@@ -91,10 +91,15 @@ class NeuralNetwork:
 						mutant[h][i][j] = pure[h][i][j] * (random.uniform(-1.0*(mutationFactor),1.0*(mutationFactor)))
 						if (mutant[h][i][j] == 0):
 							mutant[h][i][j] = random.uniform(-1,1)
+		mutant[3][0][0] = pure[3][0][0]
 		return mutant
 	
-	#def reproduce(self, population):
-	
+	def reproduce(self, population):
+		adam = population[0]
+		eva = population[1]
+		for i in range(np.shape(population)[0]):
+			population[i] = self.breedChild(adam, eva)
+		return population
 # Main loop
 if __name__ == "__main__":
 	# Learning data set
@@ -123,4 +128,7 @@ if __name__ == "__main__":
 	nn = NeuralNetwork(X,y)
 	
 	# Create population of X people and train them Y times. Returns genes of the entire population.
-	print(nn.run(16, 1000))
+	#population = nn.run(16, 1000)
+	for i in range(500):
+		population = nn.reproduce(nn.run(16, 100))
+	print(population[0][3][0][0])
