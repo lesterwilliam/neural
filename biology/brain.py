@@ -3,8 +3,10 @@ from enum import Enum
 import numpy as np
 import random
 
-X0 = [1, 0,-1,0]
-X1 = [0, 1, 2,0]
+X0 = 0
+X1 = 1
+
+Y0 = [1, 0]
 
 class NodeType:
 	Input   = 0
@@ -56,7 +58,7 @@ class Node:
 				net.weights[2].value[2][0] = 9.1
 				
 				self.sum += (net.layers[self.layerID - 1].nodes[node].value) * (net.weights[self.layerID - 1].value[node][self.nodeID])
-			print(self.sum)
+			#print(self.sum)
 			self.activation()
 	
 	def activation(self):
@@ -90,6 +92,10 @@ class Layer:
 	def forwardfeed(self):
 		for node in range(self.size):
 			self.nodes[node].forwardfeed()
+	
+	def backprop(self):
+		for node in reversed(range(self.size)):
+			self.nodes[node].backprop()
 
 class Weights:
 	def __init__(self, layerID, value):
@@ -102,6 +108,7 @@ class Network:
 		self.layerCount = len(self.size)
 		self.layers = []
 		self.weights = []
+		self.error = 0
 		# Create Layers
 		for layerID in range(self.layerCount):
 			self.layers.append(Layer(self.size[layerID][1], layerID, [0] * self.size[layerID][0]))
@@ -112,17 +119,31 @@ class Network:
 	def forwardfeed(self):
 		for layer in range(self.layerCount):
 			self.layers[layer].forwardfeed()
+		self.error = 0
+		for nodes in range(self.size[self.layerCount-1][0]):
+			self.error += ((Y0[nodes] - net.layers[self.layerCount-1].nodes[nodes].value)**2)/2
+		print("\n", self.error)
+	
+	def backprop(self):
+		for layer in reversed(range(self.layerCount)):
+			self.layers[layer].backprop()
 
 if __name__ == "__main__":
-	net = Network([[2,0],[4,2],[3,2],[1,2]])
+	# Create Network Object
+	net = Network([[2,0],[4,2],[3,2],[2,2]])
+	
+	# Set input data
+	net.layers[0].nodes[0].value = X0
+	net.layers[0].nodes[1].value = X1
+	
 	print("Layers:")
 	for layer in range(net.layerCount):
 		for node in range(net.size[layer][0]):
 			print(net.layers[layer].nodes[node].value)
 		print("\n")
-	print("Weights:")
-	for layer in range(net.layerCount-1):
-		print(net.weights[layer].value)
+	#print("Weights:")
+	#for layer in range(net.layerCount-1):
+	#	print(net.weights[layer].value)
 
 	#print (net.layers[2].nodes[0].value)
 	net.forwardfeed()
