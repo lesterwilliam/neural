@@ -47,6 +47,7 @@ class Layer:
 class Weights:
 	def __init__(self, layerID, input):
 		self.layerID = layerID
+		
 		self.input = input
 
 class Network:
@@ -54,11 +55,16 @@ class Network:
 		self.size = size
 		self.layerCount = len(size)
 		self.layers = []
+		self.weights = []
+		# Create Layers
 		for layerID in range(self.layerCount):
-			self.layerSize = [0] * self.size[layerID]
-			self.layers.append(Layer(0, layerID, self.layerSize))
+			self.layers.append(Layer(0, layerID, [0] * self.size[layerID]))
+		# Create Weights
+		for layerID in range(self.layerCount - 1):
+			self.weights.append(Weights(layerID, [[0 for x in range(self.size[layerID+1])] for y in range(self.size[layerID])]))
 
 if __name__ == "__main__":
-	net = Network([32,16,16,16,16,16,8,4,2,1])
-	for layer in range(net.layerCount):
+	net = Network([2,4,3,1])
+	for layer in range(net.layerCount-1):
 		print(net.layers[layer].input)
+		print(net.weights[layer].input)
