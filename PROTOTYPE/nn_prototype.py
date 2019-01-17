@@ -2,6 +2,8 @@
 import numpy as np
 import nn_activation_function as act_func
 import random
+import multiprocessing
+import time
 np.set_printoptions(formatter={'float':'{: 0.1f}'.format})
 # Object prototype
 class NeuralNetwork:
@@ -100,6 +102,8 @@ class NeuralNetwork:
 		for i in range(np.shape(population)[0]):
 			population[i] = self.breedChild(adam, eva)
 		return population
+		
+
 # Main loop
 if __name__ == "__main__":
 	# Learning data set
@@ -128,7 +132,11 @@ if __name__ == "__main__":
 	nn = NeuralNetwork(X,y)
 	
 	# Create population of X people and train them Y times. Returns genes of the entire population.
+	t1 = time.time()
 	population = nn.run(16, 1000)
-	for i in range(5000):
+	print("Number of cpu : ", multiprocessing.cpu_count())
+	print(time.time()-t1)
+	for i in range(100):
 		population = nn.reproduce(population)
 	print(population[0][3][0][0])
+	print(time.time()-t1)
