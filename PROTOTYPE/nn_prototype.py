@@ -25,7 +25,8 @@ class NeuralNetwork:
 	def backprop(self):
 		d_weights3 = np.dot(self.layer2.T, (2*(self.y - self.output) * act_func.av_f_d(self.output)))
 		d_weights2 = np.dot(self.layer1.T, np.dot(2*(self.y - self.output) * act_func.av_f_d(self.output), self.weights3.T) * act_func.av_f_d(self.layer2))
-		d_weights1 = np.dot(self.input.T, np.dot(np.dot(2*(self.y - self.output) * act_func.av_f_d(self.output), self.weights3.T) * act_func.av_f_d(self.layer2), self.weights2.T) * act_func.av_f_d(self.layer1))
+		d_weights1 = np.dot(self.input.T, np.dot(2*(self.y - self.output) * act_func.av_f_d(self.layer2), self.weights2.T) * act_func.av_f_d(self.layer1))
+		# old line: d_weights1 = np.dot(self.input.T, np.dot(np.dot(2*(self.y - self.output) * act_func.av_f_d(self.output), self.weights3.T) * act_func.av_f_d(self.layer2), self.weights2.T) * act_func.av_f_d(self.layer1))
 		self.weights1 += d_weights1
 		self.weights2 += d_weights2
 		self.weights3 += d_weights3
