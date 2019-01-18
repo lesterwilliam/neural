@@ -1,6 +1,7 @@
+#!/usr/bin/env python3
 # Import libraries
-from enum import Enum
-from matplotlib import pyplot
+#from enum import Enum
+#from matplotlib import pyplot
 from math import cos, sin, atan
 import numpy as np
 import random
@@ -62,7 +63,7 @@ class Node:
 		#print(self.output)
 	
 	def draw(self):
-		pygame.draw.circle(screen,(0, 128, 255),(int(screenWidth / (net.layerCount+1))*(self.layerID+1), int(screenHeight / (net.layers[self.layerID].size+1))*(self.nodeID+1)),int(abs(self.output*10)))
+		pygame.draw.circle(screen,(0, 128, 255),(int(screenWidth / (net.layerCount+1))*(self.layerID+1), int(screenHeight / (net.layers[self.layerID].size+1))*(self.nodeID+1)),int(abs(self.output*1000)))
 		#print(self.output)
 
 class Layer:
@@ -171,6 +172,7 @@ if __name__ == "__main__":
 		for node in range(net.size[layer][0]):
 			net.layers[layer].nodes[node].draw()
 	pygame.display.flip()
+	time.sleep(5)
 	#while True:
 	#	pass
 	# Print time used for completion of program

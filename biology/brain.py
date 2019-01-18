@@ -34,31 +34,6 @@ class Node:
 			self.sum = 0
 			for node in range(net.layers[self.layerID - 1].size):
 				# Test data
-				net.weights[0].value[0][0] = 0
-				net.weights[0].value[0][1] = 2
-				net.weights[0].value[0][2] = 4
-				net.weights[0].value[0][3] = 6
-				net.weights[0].value[1][0] = 0
-				net.weights[0].value[1][1] = 3
-				net.weights[0].value[1][2] = 9
-				net.weights[0].value[1][3] = 12
-				
-				net.weights[1].value[0][0] = 0.1
-				net.weights[1].value[0][1] = 2.1
-				net.weights[1].value[0][2] = 4.1
-				net.weights[1].value[1][0] = 0.1
-				net.weights[1].value[1][1] = 3.1
-				net.weights[1].value[1][2] = 9.1
-				net.weights[1].value[2][0] = 0.1
-				net.weights[1].value[2][1] = 3.1
-				net.weights[1].value[2][2] = 9.1
-				net.weights[1].value[3][0] = 0.1
-				net.weights[1].value[3][1] = 3.1
-				net.weights[1].value[3][2] = 9.1
-				
-				net.weights[2].value[0][0] = 0.1
-				net.weights[2].value[1][0] = 3.1
-				net.weights[2].value[2][0] = 9.1
 				
 				self.sum += (net.layers[self.layerID - 1].nodes[node].value) * (net.weights[self.layerID - 1].value[node][self.nodeID])
 			#print(self.sum)
@@ -82,7 +57,6 @@ class Node:
 	
 	def backprop(self):
 		pass
-		# https://machinelearningmastery.com/implement-backpropagation-algorithm-scratch-python/
 
 class Layer:
 	def __init__(self, type, layerID, input):
@@ -107,10 +81,39 @@ class Layer:
 			self.nodes[node].backprop()
 
 class Weights:
-	def __init__(self, layerID, value):
+	def __init__(self, layerCount, layerID, value):
+		self.layerCount = layerCount
 		self.layerID = layerID
 		self.value = value
-
+	
+	def backprop(self):
+		for node in range(self.size):
+			self.nodes[node].backprop()
+			
+		pass
+			
+			
+			
+			
+				# https://machinelearningmastery.com/implement-backpropagation-algorithm-scratch-python/
+		#d_weights3 = np.dot(self.layer2.T, (2*(self.y - self.output) * act_func.av_f_d(self.output)))
+		#d_weights2 = np.dot(self.layer1.T, np.dot(2*(self.y - self.output) * act_func.av_f_d(self.output), self.weights3.T) * act_func.av_f_d(self.layer2))
+		#d_weights1 = np.dot(self.input.T, np.dot(2*(self.y - self.output) * act_func.av_f_d(self.layer2), self.weights2.T) * act_func.av_f_d(self.layer1))
+		#self.weights1 += d_weights1
+		#self.weights2 += d_weights2
+		#self.weights3 += d_weights3
+		
+		if self.layerID == self.layerCount -1:
+			#weight algo for output weights
+			for y in range(len(value)):
+				for x in range(len(value[y])):
+					value[y][x] += np.dot(net.layers[self.layerID-1].nodes[y].output, (2*(X0-net.layers[self.layerID].nodes[x])*#act_func#(net.layers[self.layerID].nodes[x])))
+					
+			pass
+		else:
+			#weight algo for not output weights
+			pass
+	
 class Network:
 	def __init__(self, size):
 		self.size = size
@@ -124,7 +127,7 @@ class Network:
 			self.layers.append(Layer(self.size[layerID][1], layerID, [0] * self.size[layerID][0]))
 		# Create Weights
 		for layerID in range(self.weightCount):
-			self.weights.append(Weights(layerID, [[0 for x in range(self.size[layerID+1][0])] for y in range(self.size[layerID][0])]))
+			self.weights.append(Weights(self.layerCount, layerID, [[random.uniform(-1,1) for x in range(self.size[layerID+1][0])] for y in range(self.size[layerID][0])]))
 	
 	def forwardfeed(self):
 		for layer in range(self.layerCount):
@@ -134,8 +137,8 @@ class Network:
 			self.error += ((Y0[nodes] - net.layers[self.weightCount].nodes[nodes].value)**2)/2
 	
 	def backprop(self):
-		for layer in reversed(range(self.layerCount)):
-			self.layers[layer].backprop()
+		for weight in reversed(range(self.layerCount-1)):
+			self.weights[weight].backprop()
 
 def printNet(network):
 	print("\nNetwork:")
