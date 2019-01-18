@@ -79,6 +79,10 @@ class Node:
 			self.output = self.sum
 		if self.type == 6:
 			self.output = self.sum
+	
+	def backprop(self):
+		pass
+		# https://machinelearningmastery.com/implement-backpropagation-algorithm-scratch-python/
 
 class Layer:
 	def __init__(self, type, layerID, input):
