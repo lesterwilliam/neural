@@ -21,13 +21,15 @@ class NodeType:
 	Output  = 6
 
 class Node:
-	def __init__(self, type, nodeID, layerID):
+	def __init__(self, type, nodeID, layerID, layerCount):
 		self.nodeID = nodeID
 		self.layerID = layerID
+		self.layerCount = layerCount
 		self.type = type
 		self.value = random.uniform(-1, 1)
 		self.sum = 0
 		self.output = 0
+		self.error = 0
 	
 	def forwardfeed(self):
 		if self.layerID == 0:
@@ -56,17 +58,23 @@ class Node:
 			self.output = self.sum
 		if self.type == 6:
 			self.output = self.sum
+	
+	def getError(self):
+		# Calculate node error from all nodes in next layer and weights
+		pass
+		self.error = np.dot(
 
 class Layer:
-	def __init__(self, type, layerID, input):
+	def __init__(self, type, layerID, input, layerCount):
 		self.type = type
 		self.size = len(input)
 		self.layerID = layerID
 		self.input = input
 		self.nodes = []
+		self.layerCount = layerCount
 		# Create Nodes
 		for nodeID in range(self.size):
-			self.nodes.append(Node(self.type, nodeID, self.layerID))
+			self.nodes.append(Node(self.type, nodeID, self.layerID, self.layerCount))
 	
 	def output(self):
 		return (self.input)
@@ -130,7 +138,7 @@ class Network:
 		self.error = 0
 		# Create Layers
 		for layerID in range(self.layerCount):
-			self.layers.append(Layer(self.size[layerID][1], layerID, [0] * self.size[layerID][0]))
+			self.layers.append(Layer(self.size[layerID][1], layerID, [0] * self.size[layerID][0], self.layerCount))
 		# Create Weights
 		for layerID in range(self.weightCount):
 			self.weights.append(Weights(self.layerCount, layerID, [[random.uniform(-1,1) for x in range(self.size[layerID+1][0])] for y in range(self.size[layerID][0])]))
@@ -140,7 +148,7 @@ class Network:
 			self.layers[layer].forwardfeed()
 		self.error = 0
 		for nodes in range(self.size[self.weightCount][0]):
-			self.error += ((Y0[nodes] - net.layers[self.weightCount].nodes[nodes].value)**2)/2
+			self.error += ((Y0[nodes] - net.layers[self.weightCount].nodes[nodes].output)**2)/2
 	
 	def backprop(self):
 		for weight in reversed(range(self.weightCount)):
