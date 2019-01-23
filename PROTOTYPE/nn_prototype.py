@@ -25,6 +25,14 @@ class NeuralNetwork:
 	def backprop(self):
 		d_weights3 = np.dot(self.layer2.T, (2*(self.y - self.output) * act_func.av_f_d(self.output)))
 		d_weights2 = np.dot(self.layer1.T, np.dot(2*(self.y - self.output) * act_func.av_f_d(self.output), self.weights3.T) * act_func.av_f_d(self.layer2))
+		print("_________________________________")
+		print(self.layer1.T)
+		print(self.y)
+		print(self.output)
+		print(act_func.av_f_d(self.output))
+		print(self.weights3.T)
+		print(act_func.av_f_d(self.layer2))
+		print(d_weights2)
 		# new line:
 		d_weights1 = np.dot(self.input.T, np.dot(2*(self.y - self.output) * act_func.av_f_d(self.layer2), self.weights2.T) * act_func.av_f_d(self.layer1))
 		# old line:
@@ -136,7 +144,7 @@ if __name__ == "__main__":
 	
 	# Create population of X people and train them Y times. Returns genes of the entire population.
 	t1 = time.time()
-	population = nn.run(16, 1000)
+	population = nn.run(16, 100)
 	print("Number of cpu : ", multiprocessing.cpu_count())
 	print(time.time()-t1)
 	for i in range(100):

@@ -90,24 +90,34 @@ class Weights:
 		#d_weights3 = np.dot(self.layer2.T, (2*(self.y - self.output) * act_func.av_f_d(self.output)))
 		#d_weights2 = np.dot(self.layer1.T, np.dot(2*(self.y - self.output) * act_func.av_f_d(self.output), self.weights3.T) * act_func.av_f_d(self.layer2))
 		#d_weights1 = np.dot(self.input.T, np.dot(2*(self.y - self.output) * act_func.av_f_d(self.layer2), self.weights2.T) * act_func.av_f_d(self.layer1))
-		#self.weights1 += d_weights1
-		#self.weights2 += d_weights2
-		#self.weights3 += d_weights3
-		
-			#weight algo for output weights
+
 		for x in range(len(self.value)):
 			for y in range(len(self.value[x])):
-				newWeight = self.value[x][y]
-				leftLayer = net.layers[self.layerID].nodes[x].output
-				rightLayer = net.layers[self.layerID+1].nodes[y].output
-				soll = Y0[y]
-				error = soll - rightLayer
-				d_rightLayer = net.layers[self.layerID+1].nodes[y].output
-				d_rightLayer = 1.0/(1+ np.exp(-((net.layers[self.layerID+1].nodes[y].output))))
 				if self.layerID == self.layerCount -2:
-					newWeight += np.dot(leftLayer, (2*error*d_rightLayer))
+					# weight algorythm for output weights
+					newWeight = self.value[x][y]
+					leftLayer = net.layers[self.layerID].nodes[x].output
+					rightLayer = net.layers[self.layerID+1].nodes[y].output
+					outputLayer = net.layers[self.layerCount-1].nodes[y].output
+					soll = Y0[y]
+					error = soll - outputLayer
+					d_rightLayer = 1.0/(1+ np.exp(-((net.layers[self.layerID+1].nodes[y].output))))
+					d_outputLayer = 1.0/(1+ np.exp(-((net.layers[self.layerCount-1].nodes[y].output))))
+					
+					newWeight += np.dot(leftLayer, (2*error*d_outputLayer))
 				else:
 					pass
+					# weight algorythm for non-output weights
+					newWeight = self.value[x][y]
+					leftLayer = net.layers[self.layerID].nodes[x].output
+					rightLayer = net.layers[self.layerID+1].nodes[y].output
+					outputLayer = net.layers[self.layerCount-1].nodes[y].output
+					soll = Y0[y]
+					error = soll - outputLayer
+					d_rightLayer = 1.0/(1+ np.exp(-((net.layers[self.layerID+1].nodes[y].output))))
+					d_outputLayer = 1.0/(1+ np.exp(-((net.layers[self.layerCount-1].nodes[y].output))))
+					
+					newWeight += np.dot(leftLayer, np.dot(2 * error * d_outputLayer, self.weights3.T) * d_rightLayer)
 				self.value[x][y] = newWeight
 	
 class Network:
